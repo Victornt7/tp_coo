@@ -93,4 +93,4 @@ class Facture(models.Model):
     quantite_produit = models.ManyToManyField(QuantiteProduit)
     reduction = models.FloatField()
     point_de_vente = models.ForeignKey(PointDeVente, on_delete=models.PROTECT)
-    client = models.CharField(50)
+    client = models.CharField(max_length=50)
