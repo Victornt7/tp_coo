@@ -40,7 +40,7 @@ class Transport(models.Model):
     nombre_palettes = models.IntegerField()
     cout = models.FloatField()
     delai = models.FloatField()
-    depart = models.ForeignKey(Lieu, on_delete=models.PROTECT)
+    depart = models.ForeignKey(Lieu, on_delete=models.PROTECT, related_name="depart")
     arrivee = models.ForeignKey(Lieu, on_delete=models.PROTECT)
 
 
