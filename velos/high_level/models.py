@@ -49,7 +49,7 @@ class Operation(models.Model):
     operation_suivante = models.ForeignKey("self", on_delete=models.PROTECT)
     cout = models.FloatField()
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT)
-    quantite_produits = models.ForeignKey("QuantiteProduit", on_delete=models.PROTECT())
+    quantite_produits = models.ForeignKey("QuantiteProduit", on_delete=models.PROTECT)
     heures_de_travail = models.FloatField()
     consomation_electrique = models.FloatField()
 
