@@ -64,7 +64,9 @@ class Transport(models.Model):
 
 class Operation(models.Model):
     nom = models.CharField(max_length=50)
-    operation_suivante = models.ForeignKey("self", on_delete=models.PROTECT)
+    operation_suivante = models.ForeignKey(
+        "self", blank=True, null=True, on_delete=models.PROTECT
+    )
     cout = models.FloatField()
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT)
     quantite_produits = models.ForeignKey("QuantiteProduit", on_delete=models.PROTECT)
@@ -77,10 +79,12 @@ class Operation(models.Model):
 
 class Produit(models.Model):
     nom = models.CharField(max_length=50)
-    prix_de_vente = models.FloatField()
+    prix_de_vente = models.FloatField(blank=True, null=True)
     duree_de_vie = models.FloatField()
     nombre_par_palette = models.IntegerField()
-    operations = models.ForeignKey(Operation, on_delete=models.PROTECT)
+    operations = models.ForeignKey(
+        Operation, blank=True, null=True, on_delete=models.PROTECT
+    )
 
     def __str__(self):
         return self.nom
