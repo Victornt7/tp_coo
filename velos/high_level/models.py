@@ -12,6 +12,14 @@ class Pays(models.Model):
     def __str__(self):
         return self.nom
 
+    def json(self):
+        return {
+            "nom": self.nom,
+            "tva": self.tva,
+            "tarif_electrique": self.tarif_electrique,
+            "salaire_minimum": self.salaire_minimum,
+        }
+
 
 class Ville(models.Model):
     nom = models.CharField(max_length=58)
@@ -21,6 +29,14 @@ class Ville(models.Model):
 
     def __str__(self):
         return self.nom
+
+    def json(self):
+        return {
+            "nom": self.nom,
+            "taxe_immobiliere": self.taxe_immobiliere,
+            "prix_m2": self.prix_m2,
+            "pays": self.pays,
+        }
 
 
 class Machine(models.Model):
@@ -36,6 +52,15 @@ class Machine(models.Model):
     def __str__(self):
         return self.nom
 
+    def json(self):
+        return {
+            "nom": self.nom,
+            "prix": self.prix,
+            "duree_de_vie": self.duree_de_vie,
+            "cout_maintenance": self.cout_maintenance,
+            "superficie": self.superficie,
+        }
+
 
 class QuantiteMachine(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.PROTECT)
@@ -46,6 +71,9 @@ class QuantiteMachine(models.Model):
 
     def __str__(self):
         return f"{self.machine.nom} x {self.nombre}"
+
+    def json(self):
+        return {"machine": self.machine, "nombre": self.nombre}
 
 
 class Lieu(models.Model):
@@ -66,6 +94,15 @@ class Lieu(models.Model):
     def __str__(self):
         return self.nom
 
+    def json(self):
+        return {
+            "nom": self.nom,
+            "ville": self.ville,
+            "superficie": self.superficie,
+            "quantite_machines": [v.pk for v in self.quantite_machines],
+            "consommation_electrique": self.consommation_electrique,
+        }
+
 
 class Transport(models.Model):
     nombre_palettes = models.IntegerField()
@@ -79,6 +116,15 @@ class Transport(models.Model):
 
     def __str__(self):
         return self.depart.nom + " to " + self.arrivee.nom
+
+    def json(self):
+        return {
+            "nombre_palettes": self.nombre_palettes,
+            "cout": self.cout,
+            "delai": self.delai,
+            "depart": self.depart,
+            "arrivee": self.arrivee,
+        }
 
 
 class Operation(models.Model):
@@ -108,6 +154,17 @@ class Operation(models.Model):
     def __str__(self):
         return self.nom
 
+    def json(self):
+        return {
+            "nom": self.nom,
+            "operation_suivante": self.operation_suivante,
+            "cout": self.cout,
+            "machine": self.machine,
+            "quantite_produits": self.quantite_produits,
+            "heures_de_travail": self.heures_de_travail,
+            "consomation_electrique": self.consomation_electrique,
+        }
+
 
 class Produit(models.Model):
     nom = models.CharField(max_length=50)
@@ -128,6 +185,15 @@ class Produit(models.Model):
     def __str__(self):
         return self.nom
 
+    def json(self):
+        return {
+            "nom": self.nom,
+            "prix_de_vente": self.prix_de_vente,
+            "duree_de_vie": self.duree_de_vie,
+            "nombre_par_palette": self.nombre_par_palette,
+            "operations": self.operations,
+        }
+
 
 class PrixProduit(models.Model):
     produit = models.ForeignKey(Produit, on_delete=models.PROTECT)
@@ -136,6 +202,9 @@ class PrixProduit(models.Model):
     def __str__(self):
         return f"{self.produit}: {self.prix_achat}"
 
+    def json(self):
+        return {"produit": self.produit, "prix_achat": self.prix_achat}
+
 
 class Fournisseur(models.Model):
     nom = models.CharField(max_length=50)
@@ -143,6 +212,9 @@ class Fournisseur(models.Model):
 
     def __str__(self):
         return self.nom
+
+    def json(self):
+        return {"nom": self.nom, "prix_produit": self.prix_produit}
 
 
 class QuantiteProduit(models.Model):
@@ -155,6 +227,9 @@ class QuantiteProduit(models.Model):
     def __str__(self):
         return f"{self.produit} x {self.nombre}"
 
+    def json(self):
+        return {"produit": self.produit, "nombre": self.nombre}
+
 
 class Stock(models.Model):
     quantite_produit = models.ForeignKey(QuantiteProduit, on_delete=models.PROTECT)
@@ -165,6 +240,12 @@ class Stock(models.Model):
 
     def __str__(self):
         return f"{self.quantite_produit}, palettes max: {self.palettes_max}"
+
+    def json(self):
+        return {
+            "quantite_produit": self.quantite_produit,
+            "palettes_max": self.palettes_max,
+        }
 
 
 class PointDeVente(models.Model):
@@ -183,6 +264,14 @@ class PointDeVente(models.Model):
     def __str__(self):
         return self.nom
 
+    def json(self):
+        return {
+            "nom": self.nom,
+            "lieu": self.lieu,
+            "heures_de_travail": self.heures_de_travail,
+            "stock": self.stock,
+        }
+
 
 class Facture(models.Model):
     quantite_produit = models.ManyToManyField(QuantiteProduit)
@@ -192,3 +281,11 @@ class Facture(models.Model):
 
     def __str__(self):
         return f"{self.quantite_produit}, reduction: {self.reduction}, à {self.point_de_vente} pour {self.client}"
+
+    def json(self):
+        return {
+            "quantite_produit": self.quantite_produit,
+            "reduction": self.reduction,
+            "point_de_vente": self.point_de_vente,
+            "client": self.client,
+        }
