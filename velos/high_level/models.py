@@ -56,7 +56,7 @@ class Lieu(models.Model):
     consommation_electrique = models.FloatField()  # en W
 
     def cost(self):
-        machines = sum(m.cout() for m in self.quantite_machines.all())
+        machines = sum(m.cost() for m in self.quantite_machines.all())
         return (
             +self.superficie * self.ville.prix_m2
             + self.consommation_electrique * self.ville.pays.tarif_electrique
