@@ -17,72 +17,50 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-
-from velos.high_level.models import (
-    Facture,
-    Fournisseur,
-    Lieu,
-    Machine,
-    Operation,
-    Pays,
-    PointDeVente,
-    PrixProduit,
-    Produit,
-    QuantiteMachine,
-    QuantiteProduit,
-    Stock,
-    Transport,
-    Ville,
-)
+from high_level import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("Facture/<int:pk>", views.FactureDetailView.as_view(), name="Facture"),
     path(
-        "Facture/int<int:pk>", Facture.views.FactureDetailView.as_view(), name="Facture"
-    ),
-    path(
-        "Fournisseur/int<int:pk>",
-        Fournisseur.views.FactureDetailView.as_view(),
+        "Fournisseur/<int:pk>",
+        views.FournisseurDetailView.as_view(),
         name="Fournisseur",
     ),
-    path("Lieu/int<int:pk>", Lieu.views.FactureDetailView.as_view(), name="facture"),
+    path("Lieu/<int:pk>", views.LieuDetailView.as_view(), name="facture"),
+    path("Machine/<int:pk>", views.MachineDetailView.as_view(), name="Machine"),
     path(
-        "Machine/int<int:pk>", Machine.views.FactureDetailView.as_view(), name="Machine"
-    ),
-    path(
-        "Operation/int<int:pk>",
-        Operation.views.FactureDetailView.as_view(),
+        "Operation/<int:pk>",
+        views.OperationDetailView.as_view(),
         name="Operation",
     ),
-    path("Pays/int<int:pk>", Pays.views.FactureDetailView.as_view(), name="Pays"),
+    path("Pays/<int:pk>", views.PaysDetailView.as_view(), name="Pays"),
     path(
-        "PointDeVente/int<int:pk>",
-        PointDeVente.views.FactureDetailView.as_view(),
+        "PointDeVente/<int:pk>",
+        views.PointDeVenteDetailView.as_view(),
         name="PointDeVente",
     ),
     path(
-        "PrixProduit/int<int:pk>",
-        PrixProduit.views.FactureDetailView.as_view(),
+        "PrixProduit/<int:pk>",
+        views.PrixProduitDetailView.as_view(),
         name="PrixProduit",
     ),
+    path("Produit/<int:pk>", views.ProduitDetailView.as_view(), name="Produit"),
     path(
-        "Produit/int<int:pk>", Produit.views.FactureDetailView.as_view(), name="Produit"
-    ),
-    path(
-        "QuantiteMachine/int<int:pk>",
-        QuantiteMachine.views.FactureDetailView.as_view(),
+        "QuantiteMachine/<int:pk>",
+        views.QuantiteMachineDetailView.as_view(),
         name="QuantiteMachine",
     ),
     path(
-        "QuantiteProduit/int<int:pk>",
-        QuantiteProduit.views.FactureDetailView.as_view(),
+        "QuantiteProduit/<int:pk>",
+        views.QuantiteProduitDetailView.as_view(),
         name="QuantiteProduit",
     ),
-    path("Stock/int<int:pk>", Stock.views.FactureDetailView.as_view(), name="Stock"),
+    path("Stock/<int:pk>", views.StockDetailView.as_view(), name="Stock"),
     path(
-        "Transport/int<int:pk>",
-        Transport.views.FactureDetailView.as_view(),
+        "Transport/<int:pk>",
+        views.TransportDetailView.as_view(),
         name="Transport",
     ),
-    path("Ville/int<int:pk>", Ville.views.FactureDetailView.as_view(), name="Ville"),
+    path("Ville/<int:pk>", views.VilleDetailView.as_view(), name="Ville"),
 ]
